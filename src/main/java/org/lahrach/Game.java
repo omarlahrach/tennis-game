@@ -1,0 +1,7 @@
+package org.lahrach;
+
+public class Game {
+    public static void main(String[] args) {
+
+    }
+}
