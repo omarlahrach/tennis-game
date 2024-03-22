@@ -2,66 +2,76 @@ package org.lahrach;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
 public class ScoreTest {
     private Score score;
 
     @BeforeEach
     public void setUp() {
-        score = new Score();
+        score = new Score(30, 1);
     }
 
     @Test
-    public void incrementCurrentScore_shouldIncrementScoreByOne() {
-        // Given
-        int initialScore = score.getCurrentScore();
+    public void shouldIncrementScoreByOne() {
+        // Arrange
+        int initialScore = score.getCurrentPoint();
 
-        // When
-        score.incrementCurrentScore();
+        // Act
+        score.incrementCurrentPoint();
 
-        // Then
-        assertThat(score.getCurrentScore()).isEqualTo(initialScore + 1);
+        // Assert
+        assertThat(score.getCurrentPoint()).isEqualTo(initialScore + 1);
     }
 
     @Test
-    public void decrementCurrentScore_shouldDecrementScoreByOne() {
-        // Given
-        score.setCurrentScore(5);
-        int initialScore = score.getCurrentScore();
+    public void shouldDecrementScoreByOne() {
+        // Arrange
+        score.setCurrentPoint(5);
+        int initialScore = score.getCurrentPoint();
 
-        // When
-        score.decrementCurrentScore();
+        // Act
+        score.decrementCurrentPoint();
 
-        // Then
-        assertThat(score.getCurrentScore()).isEqualTo(initialScore - 1);
+        // Assert
+        assertThat(score.getCurrentPoint()).isEqualTo(initialScore - 1);
     }
 
     @Test
-    public void incrementGamesWon_shouldIncrementGamesWonByOne() {
-        // Given
+    public void shouldIncrementGamesWonByOne() {
+        // Arrange
         int initialGamesWon = score.getGamesWon();
 
-        // When
+        // Act
         score.incrementGamesWon();
 
-        // Then
+        // Assert
         assertThat(score.getGamesWon()).isEqualTo(initialGamesWon + 1);
     }
 
     @Test
-    public void decrementGamesWon_shouldDecrementGamesWonByOne() {
-        // Given
+    public void shouldDecrementGamesWonByOne() {
+        // Arrange
         score.setGamesWon(3);
         int initialGamesWon = score.getGamesWon();
 
-        // When
+        // Act
         score.decrementGamesWon();
 
-        // Then
+        // Assert
         assertThat(score.getGamesWon()).isEqualTo(initialGamesWon - 1);
+    }
+
+    @Test
+    public void shouldResetPoints() {
+        // Arrange
+        score.setCurrentPoint(3);
+
+        // Act
+        score.resetPoints();
+
+        // Assert
+        assertThat(score.getCurrentPoint()).isEqualTo(0);
     }
 }

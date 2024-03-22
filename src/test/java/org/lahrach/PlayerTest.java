@@ -1,55 +1,44 @@
 package org.lahrach;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.lahrach.pattern.Observer;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class PlayerTest {
     private Player player;
-    private Score scoreMock;
+    
+    @Mock private Score score;
+    @Mock private Observer observer;
 
     @BeforeEach
     public void setUp() {
-        scoreMock = mock(Score.class);
-        player = new Player("TestPlayer", scoreMock);
+        MockitoAnnotations.openMocks(this);
+        player = new Player("TestPlayer");
+        player.setScore(score);
+        player.setObserver(observer);
     }
 
     @Test
-    public void winsPoint_shouldIncrementCurrentScore() {
-        // When
+    public void shouldWinsPoint() {
+        // Act
         player.winsPoint();
 
-        // Then
-        verify(scoreMock, times(1)).incrementCurrentScore();
+        // Assert
+        verify(score, times(1)).incrementCurrentPoint();
+        verify(observer, times(1)).update(player);
     }
 
     @Test
-    public void losesPoint_shouldDecrementCurrentScore() {
-        // When
-        player.losesPoint();
-
-        // Then
-        verify(scoreMock, times(1)).decrementCurrentScore();
-    }
-
-    @Test
-    public void winsGame_shouldIncrementGamesWon() {
-        // When
+    public void shouldWinsGame() {
+        // Act
         player.winsGame();
 
-        // Then
-        verify(scoreMock, times(1)).incrementGamesWon();
-    }
-
-    @Test
-    public void losesGame_shouldDecrementGamesWon() {
-        // When
-        player.losesGame();
-
-        // Then
-        verify(scoreMock, times(1)).decrementGamesWon();
+        // Assert
+        verify(score, times(1)).incrementGamesWon();
     }
 }

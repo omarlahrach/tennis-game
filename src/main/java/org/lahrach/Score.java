@@ -1,18 +1,24 @@
 package org.lahrach;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
 public class Score {
-    private int currentScore;
+    private int currentPoint;
     private int gamesWon;
 
-    public void incrementCurrentScore() {
-        currentScore++;
+    public void incrementCurrentPoint() {
+        currentPoint++;
     }
 
-    public void decrementCurrentScore() {
-        currentScore--;
+    public void decrementCurrentPoint() {
+        currentPoint--;
     }
 
     public void incrementGamesWon() {
@@ -21,5 +27,9 @@ public class Score {
 
     public void decrementGamesWon() {
         gamesWon--;
+    }
+
+    public void resetPoints() {
+        currentPoint = 0;
     }
 }

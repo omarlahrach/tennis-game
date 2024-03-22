@@ -1,40 +1,46 @@
 package org.lahrach;
 
-import java.util.Set;
+import org.lahrach.pattern.Observer;
+import org.lahrach.pattern.Subject;
 
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-@Data
+@Getter
+@Setter
+@ToString
 @RequiredArgsConstructor
-public class Player implements Emitter {
+@NoArgsConstructor(force = true)
+public class Player implements Subject {
     private final String name;
-    private final Score score;
-    private Set<Observer> observers;
+    private Score score = new Score(0, 0);
+
+    @Getter(AccessLevel.NONE)
+    @Setter(AccessLevel.NONE)
+    private Observer observer;
 
     public void winsPoint() {
-        score.incrementCurrentScore();
-    }
-
-    public void losesPoint() {
-        score.decrementCurrentScore();
+        score.incrementCurrentPoint();
+        this.notifyObserver();
     }
 
     public void winsGame() {
         score.incrementGamesWon();
-    }
-
-    public void losesGame() {
-        score.decrementGamesWon();
-    }
-
-    @Override
-    public void addObserver(Observer observer) {
-
+        score.resetPoints();
+        this.notifyObserver();
     }
 
     @Override
-    public void notifyObserver(Score score) {
+    public void setObserver(Observer observer) {
+        this.observer = observer;
+    }
 
+    @Override
+    public void notifyObserver() {
+        observer.update(this);
     }
 }
