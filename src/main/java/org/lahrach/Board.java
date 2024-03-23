@@ -22,6 +22,7 @@ public class Board {
 
         System.out.print(player1Row);
         System.out.print(player2Row);
-        System.out.println("+----------+------------+----------------+");
+        System.out.print("+----------+------------+----------------+\n\n");
+        System.out.print("##########################################\n\n");
     }
 }

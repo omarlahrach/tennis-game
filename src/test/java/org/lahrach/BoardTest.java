@@ -33,8 +33,8 @@ public class BoardTest {
         Player player1 = new Player("Sarah");
         Player player2 = new Player("Bernard");
         
-        player1.setScore(new Score(30, 1));
-        player2.setScore(new Score(15, 3));
+        player1.setScore(new Score(2, 1));
+        player2.setScore(new Score(1, 3));
 
         // Act
         board.display(player1, player2);
@@ -46,7 +46,8 @@ public class BoardTest {
                 "+----------+------------+----------------+\r\n" +
                 "| Sarah    | 1          | 30             |\r\n" +
                 "| Bernard  | 3          | 15             |\r\n" +
-                "+----------+------------+----------------+";
-        assertThat(outputStream.toString().trim()).isEqualTo(expectedOutput);
+                "+----------+------------+----------------+\n\n" +
+                "##########################################\n\n";
+        assertThat(outputStream.toString()).isEqualTo(expectedOutput);
     }
 }
