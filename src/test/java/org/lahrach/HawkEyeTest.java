@@ -1,37 +1,41 @@
 package org.lahrach;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.lahrach.pattern.Observer;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 public class HawkEyeTest {
     private HawkEye hawkEye;
 
-    @Mock
-    private Observer observer;
-
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
         hawkEye = new HawkEye();
-        hawkEye.setObserver(observer);
     }
 
-    @Test
-    public void shouldNotifyRefereeWhenUpdated() {
-        // Act
-        hawkEye.update(new Player());
+    @ParameterizedTest
+    @CsvSource({
+            "0, 1, true",
+            "0, 2, true",
+            "0, 3, true",
+            "1, 0, true",
+            "1, 2, true",
+            "1, 3, true",
+            "2, 0, true",
+            "2, 1, true",
+            "2, 3, true",
+            "3, 0, true",
+            "3, 1, true",
+            "3, 2, true",
+    })
+    public void shouldIndicatePointsDifferent(int player1Point, int player2Point, boolean expected) {
+        // Arrange
+        hawkEye.setScore1(new Score(player1Point, 0));
+        hawkEye.setScore2(new Score(player2Point, 0));
 
-        // Assert
-        verify(observer, times(1)).update(hawkEye);
+        // Act & Assert
+        assertThat(hawkEye.isPointsDifferent()).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -44,8 +48,12 @@ public class HawkEyeTest {
             "5, 4, false",
     })
     public void shouldIndicatePointsTied(int player1Point, int player2Point, boolean expected) {
+        // Arrange
+        hawkEye.setScore1(new Score(player1Point, 0));
+        hawkEye.setScore2(new Score(player2Point, 0));
+
         // Act & Assert
-        assertThat(hawkEye.isPointsTied(player1Point, player2Point)).isEqualTo(expected);
+        assertThat(hawkEye.isPointsTied()).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -58,8 +66,12 @@ public class HawkEyeTest {
             "4, 2, false"
     })
     public void shouldIndicateDeuce(int player1Point, int player2Point, boolean expected) {
+        // Arrange
+        hawkEye.setScore1(new Score(player1Point, 0));
+        hawkEye.setScore2(new Score(player2Point, 0));
+
         // Act & Assert
-        assertThat(hawkEye.isDeuce(player1Point, player2Point)).isEqualTo(expected);
+        assertThat(hawkEye.isDeuce()).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -72,8 +84,12 @@ public class HawkEyeTest {
             "2, 3, false"
     })
     public void shouldIndicateAdvantage(int player1Point, int player2Point, boolean expected) {
+        // Arrange
+        hawkEye.setScore1(new Score(player1Point, 0));
+        hawkEye.setScore2(new Score(player2Point, 0));
+
         // Act & Assert
-        assertThat(hawkEye.hasAdvantage(player1Point, player2Point)).isEqualTo(expected);
+        assertThat(hawkEye.hasAdvantage()).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -89,8 +105,12 @@ public class HawkEyeTest {
             "3, 1, false"
     })
     public void shouldIndicateGameWinner(int player1Point, int player2Point, boolean expected) {
+        // Arrange
+        hawkEye.setScore1(new Score(player1Point, 0));
+        hawkEye.setScore2(new Score(player2Point, 0));
+
         // Act & Assert
-        assertThat(hawkEye.hasGameWinner(player1Point, player2Point)).isEqualTo(expected);
+        assertThat(hawkEye.hasGameWinner()).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -101,8 +121,12 @@ public class HawkEyeTest {
             "6, 4, false"
     })
     public void shouldIndicateExtraGame(int player1GamesWon, int player2GamesWon, boolean expected) {
+        // Arrange
+        hawkEye.setScore1(new Score(0, player1GamesWon));
+        hawkEye.setScore2(new Score(0, player2GamesWon));
+
         // Act & Assert
-        assertThat(hawkEye.isInExtraGame(player1GamesWon, player2GamesWon)).isEqualTo(expected);
+        assertThat(hawkEye.isInExtraGame()).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -113,8 +137,12 @@ public class HawkEyeTest {
             "6, 7, false"
     })
     public void shouldIndicateTieBreak(int player1GamesWon, int player2GamesWon, boolean expected) {
+        // Arrange
+        hawkEye.setScore1(new Score(0, player1GamesWon));
+        hawkEye.setScore2(new Score(0, player2GamesWon));
+
         // Act & Assert
-        assertThat(hawkEye.isInTieBreak(player1GamesWon, player2GamesWon)).isEqualTo(expected);
+        assertThat(hawkEye.isInTieBreak()).isEqualTo(expected);
     }
 
     @ParameterizedTest
@@ -129,7 +157,11 @@ public class HawkEyeTest {
             "6, 6, false"
     })
     public void shouldIndicateSetWinner(int player1GamesWon, int player2GamesWon, boolean expected) {
+        // Arrange
+        hawkEye.setScore1(new Score(0, player1GamesWon));
+        hawkEye.setScore2(new Score(0, player2GamesWon));
+
         // Act & Assert
-        assertThat(hawkEye.hasSetWinner(player1GamesWon, player2GamesWon)).isEqualTo(expected);
+        assertThat(hawkEye.hasSetWinner()).isEqualTo(expected);
     }
 }

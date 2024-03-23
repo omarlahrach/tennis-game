@@ -13,7 +13,7 @@ public class PlayerTest {
     private Player player;
     
     @Mock private Score score;
-    @Mock private Observer observer;
+    @Mock private Observer<Player> observer;
 
     @BeforeEach
     public void setUp() {
@@ -24,7 +24,7 @@ public class PlayerTest {
     }
 
     @Test
-    public void shouldWinsPoint() {
+    public void shouldWinsPointAndNotifyObserver() {
         // Act
         player.winsPoint();
 

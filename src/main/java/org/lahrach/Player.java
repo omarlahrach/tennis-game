@@ -3,25 +3,22 @@ package org.lahrach;
 import org.lahrach.pattern.Observer;
 import org.lahrach.pattern.Subject;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
-@RequiredArgsConstructor
-@NoArgsConstructor(force = true)
-public class Player implements Subject {
+public class Player implements Subject<Player> {
     private final String name;
-    private Score score = new Score(0, 0);
+    private Score score;
+    private Observer<Player> observer;
 
-    @Getter(AccessLevel.NONE)
-    @Setter(AccessLevel.NONE)
-    private Observer observer;
+    public Player(String name) {
+        this.name = name;
+        score = new Score(0, 0);
+    }
 
     public void winsPoint() {
         score.incrementCurrentPoint();
@@ -30,12 +27,10 @@ public class Player implements Subject {
 
     public void winsGame() {
         score.incrementGamesWon();
-        score.resetPoints();
-        this.notifyObserver();
     }
 
     @Override
-    public void setObserver(Observer observer) {
+    public void setObserver(Observer<Player> observer) {
         this.observer = observer;
     }
 

@@ -1,6 +1,6 @@
 package org.lahrach.pattern;
 
-public interface Subject {
-    void setObserver(Observer observer);
+public interface Subject<T> {
+    void setObserver(Observer<T> observer);
     void notifyObserver();
 }

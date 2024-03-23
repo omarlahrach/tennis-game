@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Board {
     private List<String> boardPoints = List.of("0", "15", "30", "40");
-    
+
     public void display(Player player1, Player player2) {
         System.out.println("+----------+------------+----------------+");
         System.out.println("| Player   | Games Won  | Current Point  |");

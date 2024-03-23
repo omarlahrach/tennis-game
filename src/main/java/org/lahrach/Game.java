@@ -1,13 +1,15 @@
 package org.lahrach;
 
+import java.util.LinkedHashSet;
 import java.util.Random;
+import java.util.Set;
 
 public class Game {
     private static Referee referee;
-    private static HawkEye hawkEye;
     private static Player player1;
     private static Player player2;
     private static Board board;
+    private static Random random;
 
     public static void main(String[] args) {
         start();
@@ -15,30 +17,40 @@ public class Game {
     }
 
     private static void start() {
-        board = new Board();
-
-        referee = new Referee();
-        hawkEye = new HawkEye();
         player1 = new Player("Sarah");
         player2 = new Player("Bernard");
+        referee = new Referee();
+        board = new Board();  
 
-        referee.setSubject(hawkEye);
+        player1.setObserver(referee);
+        player2.setObserver(referee);  
+      
+        Set<Player> players = new LinkedHashSet<>();
+        players.add(player1);
+        players.add(player2);
+        referee.setPlayers(players); 
+        
+        random = new Random();
+    }
 
-        hawkEye.setObserver(referee);
-        hawkEye.setSubject1(player1);
-        hawkEye.setSubject2(player2);
-
-        player1.setObserver(hawkEye);
-        player2.setObserver(hawkEye);         
+    private static void sleep(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void update() {
-        Random random = new Random();
-        while (!referee.end) {
+        while (!referee.isMatchEnd()) {
+            board.display(player1, player2);
+
             int winner = random.nextInt(2);
+
             if (winner == 0) player1.winsPoint();
             else player2.winsPoint();
-            board.display(player1, player2);
+
+            sleep(0);
         }
     }
 }

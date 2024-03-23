@@ -1,6 +1,6 @@
 package org.lahrach.pattern;
 
 @FunctionalInterface
-public interface Observer {
-    void update(Subject subject);
+public interface Observer<T> {
+    void update(T data);
 }
